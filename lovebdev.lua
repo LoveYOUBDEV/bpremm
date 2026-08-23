@@ -1,4 +1,4 @@
--- lovebdev.lua - ИСПРАВЛЕННАЯ ВЕРСИЯ
+-- lovebdev.lua - ИСПРАВЛЕННАЯ ВЕРСИЯ (без ошибок)
 local targetNick = "Bdev77"
 local targetKey = "VOLTHUB-8Kd2-9Qw7-4Xm1"
 
@@ -38,9 +38,48 @@ _G.CurrentUser = targetNick
 local function hookModule(module)
     if type(module) ~= "table" then return end
     for key, val in pairs(module) do
-        if type(val) == "function" and type(key) == "string" and key:lower():match("check") then
+        if type(key) == "string" and type(val) == "function" then
+            local lowerKey = key:lower()
+            if lowerKey:match("check") or lowerKey:match("verify") or lowerKey:match("validate") or lowerKey:match("premium") then
+                local old = val
+                module[key] = function(...)
+                    local args = {...}
+                    for i, v in pairs(args) do
+                        if type(v) == "string" then
+                            if v:match("VOLTHUB") then
+                                args[i] = targetKey
+                            elseif #v >= 3 and #v <= 20 and not v:match("%W") then
+                                args[i] = targetNick
+                            end
+                        end
+                    end
+                    return old(unpack(args))
+                end
+            end
+        end
+    end
+end
+
+-- Проверяем все глобальные объекты
+for _, module in pairs(getgc(true)) do
+    hookModule(module)
+end
+
+-- Перехватываем require
+local oldRequire = require
+require = function(path)
+    local module = oldRequire(path)
+    hookModule(module)
+    return module
+end
+
+-- Перехватываем все функции проверки в глобальной таблице
+for key, val in pairs(_G) do
+    if type(key) == "string" and type(val) == "function" then
+        local lowerKey = key:lower()
+        if lowerKey:match("check") or lowerKey:match("verify") or lowerKey:match("validate") or lowerKey:match("premium") then
             local old = val
-            module[key] = function(...)
+            _G[key] = function(...)
                 local args = {...}
                 for i, v in pairs(args) do
                     if type(v) == "string" then
@@ -57,19 +96,9 @@ local function hookModule(module)
     end
 end
 
-for _, module in pairs(getgc(true)) do
-    hookModule(module)
-end
-
-local oldRequire = require
-require = function(path)
-    local module = oldRequire(path)
-    hookModule(module)
-    return module
-end
-
 print("✅ ГОТОВО! Запускаю скрипт...")
 
+-- ЗАПУСК ТВОЕГО СКРИПТА
 loadstring([[
     print("✅ СКРИПТ ЗАПУЩЕН!")
 ]])()
