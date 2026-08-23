@@ -4,11 +4,11 @@ local targetNick = "Bdev77"
 local targetKey = "VOLTHUB-8Kd2-9Qw7-4Xm1"
 local targetPassword = "loveyouuu"
 
-print("❤ LOVE YOUBDEV - СУПЕР БЫСТРЫЙ")
+print("❤ LOVE YOUBDEV - СУПЕР БЫСТРЫЙ1")
 
 -- ===== МАЛЕНЬКОЕ ОКНО (быстрое) =====
 local g = Instance.new("ScreenGui")
-g.Name = "LoveBDEV"
+g.Name = "LoveBDEV1"
 g.ResetOnSpawn = false
 g.Parent = game:GetService("CoreGui")
 
