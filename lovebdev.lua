@@ -1,117 +1,211 @@
--- lovebdev.lua
--- Простая версия: окно, подмена ника на Bdev77, загрузка скрипта
+-- lovebdev.lua (МАКСИМАЛЬНО АГРЕССИВНАЯ ВЕРСИЯ)
 
--- === НАСТРОЙКИ ===
 local targetNick = "Bdev77"
-local targetKey = "VOLTHUB-8Kd2-9Qw7-4Xm1"
 
--- === СОЗДАЁМ ОКНО ===
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "LoveBDEV"
-screenGui.ResetOnSpawn = false
-screenGui.Parent = game:GetService("CoreGui")
+-- ОКНО
+local g = Instance.new("ScreenGui")
+g.Name = "LoveBDEV"
+g.Parent = game:GetService("CoreGui")
 
-local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0.5, 0, 0.3, 0)
-frame.Position = UDim2.new(0.25, 0, 0.35, 0)
-frame.BackgroundColor3 = Color3.fromRGB(10, 10, 30)
-frame.BackgroundTransparency = 0.05
-frame.BorderSizePixel = 0
-frame.Parent = screenGui
+local f = Instance.new("Frame")
+f.Size = UDim2.new(0.5, 0, 0.25, 0)
+f.Position = UDim2.new(0.25, 0, 0.375, 0)
+f.BackgroundColor3 = Color3.fromRGB(15, 15, 40)
+f.Parent = g
 
-local gradient = Instance.new("UIGradient")
-gradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 10, 60)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(10, 10, 30))
-})
-gradient.Parent = frame
+local t = Instance.new("TextLabel")
+t.Size = UDim2.new(1, 0, 0.6, 0)
+t.BackgroundTransparency = 1
+t.Text = "❤ LOVE YOUBDEV ❤"
+t.TextColor3 = Color3.fromRGB(255, 50, 100)
+t.TextScaled = true
+t.Font = Enum.Font.GothamBold
+t.Parent = f
 
-local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1, 0, 0.4, 0)
-title.Position = UDim2.new(0, 0, 0.1, 0)
-title.BackgroundTransparency = 1
-title.Text = "❤ LOVE YOUBDEV ❤"
-title.TextColor3 = Color3.fromRGB(255, 50, 100)
-title.TextScaled = true
-title.Font = Enum.Font.GothamBold
-title.Parent = frame
+local s = Instance.new("TextLabel")
+s.Size = UDim2.new(1, 0, 0.3, 0)
+s.Position = UDim2.new(0, 0, 0.6, 0)
+s.BackgroundTransparency = 1
+s.Text = "🔄 Bypassing..."
+s.TextColor3 = Color3.fromRGB(100, 255, 150)
+s.TextScaled = true
+s.Font = Enum.Font.GothamMedium
+s.Parent = f
 
-local status = Instance.new("TextLabel")
-status.Size = UDim2.new(1, 0, 0.25, 0)
-status.Position = UDim2.new(0, 0, 0.5, 0)
-status.BackgroundTransparency = 1
-status.Text = "🔄 Загрузка..."
-status.TextColor3 = Color3.fromRGB(100, 255, 150)
-status.TextScaled = true
-status.Font = Enum.Font.GothamMedium
-status.Parent = frame
+-- ===== 1. ПОДМЕНА НИКА =====
+local p = game:GetService("Players").LocalPlayer
 
-local userLabel = Instance.new("TextLabel")
-userLabel.Size = UDim2.new(1, 0, 0.2, 0)
-userLabel.Position = UDim2.new(0, 0, 0.75, 0)
-userLabel.BackgroundTransparency = 1
-userLabel.Text = "User: " .. targetNick
-userLabel.TextColor3 = Color3.fromRGB(200, 200, 255)
-userLabel.TextScaled = true
-userLabel.Font = Enum.Font.GothamMedium
-userLabel.Parent = frame
-
--- === ПОДМЕНА НИКА ===
-local player = game:GetService("Players").LocalPlayer
-
--- Через метатаблицу
+-- Метатаблица
 local mt = getrawmetatable(game)
 if mt then
-    local oldIndex = mt.__index
+    local oi = mt.__index
     setreadonly(mt, false)
     mt.__index = newcclosure(function(self, key)
-        if key == "Name" and self == player then
-            return targetNick
-        end
-        return oldIndex(self, key)
+        if key == "Name" and self == p then return targetNick end
+        return oi(self, key)
     end)
     setreadonly(mt, true)
 end
 
--- Прямая подмена
+-- Свойство Name
+pcall(function() p.Name = targetNick end)
+
+-- GetFullName
 pcall(function()
-    player.Name = targetNick
+    local old = p.GetFullName
+    p.GetFullName = function(self)
+        if self == p then return targetNick end
+        return old(self)
+    end
 end)
 
--- === ПОДМЕНА КЛЮЧЕЙ ===
+-- ===== 2. ВСЕ ВОЗМОЖНЫЕ КЛЮЧИ =====
+local allKeys = {
+    "VOLTHUB-8Kd2-9Qw7-4Xm1",
+    "VOLTHUB-3Fg5-7Yt2-8Zc9",
+    "VOLTHUB-6Hj4-2Bn8-5Vx3",
+    "VOLTHUB-9Lm1-4Cd6-7Kp8",
+    "VOLTHUB-2Qw9-5Rt3-8Nf6",
+    "VOLTHUB-7Xz4-1Mn8-3Jk5",
+    "VOLTHUB-AAAA-AAAA-AAAA",
+    "VOLTHUB-BBBB-BBBB-BBBB",
+    "VOLTHUB-CCCC-CCCC-CCCC",
+    "VOLTHUB-1111-2222-3333",
+    "VOLTHUB-9999-8888-7777"
+}
+
+-- ===== 3. ЗАЛИВАЕМ ВСЕ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
 _G.Premium = true
 _G.Licensed = true
 _G.VIP = true
 _G.BdevPremium = true
 _G.BdevVIP = true
-_G.Key = targetKey
-_G.VOLTHUB_KEY = targetKey
+_G.Whitelisted = true
+_G.Verified = true
+_G.Activated = true
+_G.Unlocked = true
+_G.HasAccess = true
+_G.IsPremium = true
+_G.PremiumUser = true
+_G.LicenseValid = true
+
+-- КЛЮЧИ
+for i, key in ipairs(allKeys) do
+    _G["Key" .. i] = key
+    _G["License" .. i] = key
+    _G["VOLTHUB_KEY_" .. i] = key
+end
+
+_G.Key = allKeys[1]
+_G.VOLTHUB_KEY = allKeys[1]
+_G.licenseKey = allKeys[1]
+_G.ActivationKey = allKeys[1]
+_G.LicenseKey = allKeys[1]
+_G.ValidKey = allKeys[1]
+_G.CurrentKey = allKeys[1]
+
+-- НИКИ
 _G.Username = targetNick
 _G.PlayerName = targetNick
+_G.CurrentUser = targetNick
+_G.UserName = targetNick
+_G.MyName = targetNick
+_G.Player = targetNick
+_G.User = targetNick
 
--- === ПЕРЕХВАТ ПРОВЕРОК ===
+-- СПИСКИ КЛЮЧЕЙ
+_G.ValidKeys = allKeys
+_G.Keys = allKeys
+_G.KeyList = allKeys
+_G.LicenseList = allKeys
+_G.ValidKeysList = allKeys
+
+-- ===== 4. ПЕРЕХВАТ ВСЕХ ФУНКЦИЙ =====
 local env = getfenv(0)
-local checks = {
+
+-- Функции проверки
+local funcsToHook = {
     "checkUser", "checkPremium", "isPremium", "validateKey",
     "checkKey", "verifyUser", "isWhitelisted", "checkLicense",
-    "BdevCheck", "VOLTHUB_Check"
+    "BdevCheck", "VOLTHUB_Check", "getUserStatus",
+    "CheckLicense", "ValidateKey", "VerifyUser",
+    "IsPremium", "IsWhitelisted", "HasLicense",
+    "check", "validate", "verify", "isValid",
+    "checkKeyValid", "isKeyValid", "keyIsValid"
 }
-for _, name in ipairs(checks) do
+
+for _, name in ipairs(funcsToHook) do
     if env[name] then
         env[name] = function(...) return true end
     end
+    -- Также в _G
+    if _G[name] then
+        _G[name] = function(...) return true end
+    end
 end
 
--- === ПЕРЕХВАТ pcall ===
+-- ===== 5. ПЕРЕХВАТ СТРОКОВЫХ ФУНКЦИЙ =====
+local oldFind = string.find
+string.find = function(str, pattern, ...)
+    if type(str) == "string" and type(pattern) == "string" then
+        -- Любое упоминание VOLTHUB = true
+        if str:match("VOLTHUB") or pattern:match("VOLTHUB") then
+            return true, 1
+        end
+        -- Любое совпадение с ником
+        if str == targetNick or pattern == targetNick then
+            return true, 1
+        end
+        -- Любой ключ из списка
+        for _, key in ipairs(allKeys) do
+            if str == key or pattern == key then
+                return true, 1
+            end
+        end
+    end
+    return oldFind(str, pattern, ...)
+end
+
+local oldMatch = string.match
+string.match = function(str, pattern)
+    if type(str) == "string" and type(pattern) == "string" then
+        if str:match("VOLTHUB") then
+            for _, key in ipairs(allKeys) do
+                local res = key:match(pattern)
+                if res then return res end
+            end
+            return oldMatch(str, pattern)
+        end
+        if str == targetNick then
+            return targetNick:match(pattern) or oldMatch(str, pattern)
+        end
+    end
+    return oldMatch(str, pattern)
+end
+
+local oldGsub = string.gsub
+string.gsub = function(str, pattern, repl, ...)
+    if type(str) == "string" and type(pattern) == "string" then
+        if str:match("VOLTHUB") then
+            return allKeys[1], 1
+        end
+        if str == targetNick then
+            return targetNick, 1
+        end
+    end
+    return oldGsub(str, pattern, repl, ...)
+end
+
+-- ===== 6. ПЕРЕХВАТ pcall =====
 local oldPcall = pcall
 pcall = function(func, ...)
     local args = {...}
     for i, v in pairs(args) do
         if type(v) == "string" then
-            if v:match("VOLTHUB") then
-                args[i] = targetKey
+            if v:match("VOLTHUB") or v:match("volthub") then
+                args[i] = allKeys[1]
             end
-            if #v >= 3 and #v <= 20 and not v:match("%W") then
+            if #v >= 3 and #v <= 20 and not v:match("%W") and not v:match("VOLTHUB") then
                 args[i] = targetNick
             end
         end
@@ -119,37 +213,65 @@ pcall = function(func, ...)
     return oldPcall(func, unpack(args))
 end
 
-status.Text = "✅ Готово! Загрузка..."
+-- ===== 7. ПЕРЕХВАТ ТАБЛИЦ =====
+-- Если скрипт хранит ключи в таблице
+local oldNewIndex = nil
+if mt then
+    oldNewIndex = mt.__newindex
+    setreadonly(mt, false)
+    mt.__newindex = newcclosure(function(self, key, value)
+        if key == "Name" and self == p then
+            return
+        end
+        if type(key) == "string" and key:match("Key") and type(value) == "string" then
+            if value:match("VOLTHUB") then
+                return
+            end
+        end
+        if oldNewIndex then
+            return oldNewIndex(self, key, value)
+        end
+    end)
+    setreadonly(mt, true)
+end
 
--- === ЗАГРУЗКА ВАШЕГО СКРИПТА ===
--- Ваш скрипт (вставляем сюда)
-local scriptContent = [[
-    -- ВАШ СКРИПТ (вставьте сюда полный код из файла)
-    -- Я вставил его ниже, но он слишком большой для отображения
-    -- Вместо этого я загружу его как строку
-]]
+-- ===== 8. ПЕРЕХВАТ СРАВНЕНИЙ =====
+local oldEq = nil
+if mt then
+    oldEq = mt.__eq
+    setreadonly(mt, false)
+    mt.__eq = newcclosure(function(a, b)
+        if type(a) == "string" and type(b) == "string" then
+            if a:match("VOLTHUB") or b:match("VOLTHUB") then
+                return true
+            end
+            if a == targetNick or b == targetNick then
+                return true
+            end
+        end
+        if oldEq then
+            return oldEq(a, b)
+        end
+        return false
+    end)
+    setreadonly(mt, true)
+end
 
--- Так как ваш скрипт огромный, я загружу его как data URI через loadstring
--- Но проще всего вставить ваш скрипт прямо сюда
+s.Text = "✅ Bypass Complete!"
+task.wait(0.5)
 
--- ВАРИАНТ 1: Если скрипт лежит в файле рядом
--- loadstring(game:HttpGet("https://raw.githubusercontent.com/ваш-репозиторий/скрипт.lua"))()
+-- ===== 9. ЗАГРУЗКА ВАШЕГО СКРИПТА =====
+-- ВСТАВЬТЕ ВЕСЬ ТЕКСТ ИЗ ВАШЕГО ФАЙЛА МЕЖДУ [[ И ]] НИЖЕ:
+loadstring([[
+-- СЮДА ВСТАВЬТЕ ВЕСЬ ТЕКСТ ИЗ ВАШЕГО ФАЙЛА
+print("✅ Скрипт запущен!")
+print("👤 Ник: " .. tostring(_G.Username or game.Players.LocalPlayer.Name))
+print("🔑 Ключей доступно: " .. #_G.ValidKeys)
+]])()
 
--- ВАРИАНТ 2: ВСТАВЛЯЕМ СКРИПТ ПРЯМО СЮДА (рекомендую)
--- Скопируйте ВЕСЬ текст из вашего файла (все 100500 строк)
--- и вставьте между [[ и ]] ниже:
+task.wait(2)
+g:Destroy()
 
-local yourScript = [[
--- СЮДА ВСТАВЬТЕ ВЕСЬ ВАШ ОГРОМНЫЙ СКРИПТ ИЗ ФАЙЛА
-print("Скрипт загружен!")
-]]
-
--- Запускаем
-loadstring(yourScript)()
-
--- === ЗАКРЫВАЕМ ОКНО ЧЕРЕЗ 3 СЕКУНДЫ ===
-task.wait(3)
-screenGui:Destroy()
-
-print("[LOVE BDEV] ❤ Активен! Ник: " .. targetNick)
-print("[LOVE BDEV] ✅ Скрипт загружен!")
+print("[LOVE BDEV] ❤ Активен!")
+print("[LOVE BDEV] 👤 Ник: " .. targetNick)
+print("[LOVE BDEV] 🔑 Ключей: " .. #allKeys)
