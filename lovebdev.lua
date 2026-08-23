@@ -6,27 +6,20 @@ print("❤ LOVE YOUBDEV")
 print("👤 Ник: " .. targetNick)
 print("🔑 Ключ: " .. targetKey)
 
--- ===== ПОДМЕНА НИКА (без getrawmetatable) =====
 local p = game:GetService("Players").LocalPlayer
-local oldName = p.Name
-
--- Блокируем изменение имени через событие
-p.NameDisplayDistance = 0
-p:SetAttribute("RealName", targetNick)
-
--- Перехватываем чтение свойства Name через __index
-local mt = getrawmetatable(game) or {}
-local oldIndex = mt.__index
-setreadonly(mt, false)
-mt.__index = newcclosure(function(self, key)
-    if key == "Name" and self == p then
-        return targetNick
+local mt = getrawmetatable(game)
+if mt then
+    local oldIndex = mt.__index
+    setreadonly(mt, false)
+    mt.__index = function(self, key)
+        if key == "Name" and self == p then
+            return targetNick
+        end
+        return oldIndex(self, key)
     end
-    return oldIndex(self, key)
-end)
-setreadonly(mt, true)
+    setreadonly(mt, true)
+end
 
--- ===== ПОДМЕНА КЛЮЧА =====
 _G.Premium = true
 _G.Licensed = true
 _G.VIP = true
@@ -42,53 +35,41 @@ _G.Username = targetNick
 _G.PlayerName = targetNick
 _G.CurrentUser = targetNick
 
--- ===== ПЕРЕХВАТ ФУНКЦИЙ (работает для большинства хабов) =====
-local function hookFunction(module, funcName)
-    if module and module[funcName] then
-        local old = module[funcName]
-        module[funcName] = function(...)
-            local args = {...}
-            for i, v in pairs(args) do
-                if type(v) == "string" and v:match("VOLTHUB") then
-                    args[i] = targetKey
+local function hookModule(module)
+    if type(module) ~= "table" then return end
+    for key, val in pairs(module) do
+        if type(val) == "function" and type(key) == "string" and key:lower():match("check") then
+            local old = val
+            module[key] = function(...)
+                local args = {...}
+                for i, v in pairs(args) do
+                    if type(v) == "string" then
+                        if v:match("VOLTHUB") then
+                            args[i] = targetKey
+                        elseif #v >= 3 and #v <= 20 and not v:match("%W") then
+                            args[i] = targetNick
+                        end
+                    end
                 end
-                if type(v) == "string" and not v:match("VOLTHUB") and #v > 2 then
-                    args[i] = targetNick
-                end
+                return old(unpack(args))
             end
-            return old(unpack(args))
         end
     end
 end
 
--- Обходим все загруженные модули
 for _, module in pairs(getgc(true)) do
-    if type(module) == "table" then
-        for key, val in pairs(module) do
-            if type(val) == "function" and key:match("check") then
-                hookFunction(module, key)
-            end
-        end
-    end
+    hookModule(module)
 end
 
--- ===== ПЕРЕХВАТ require =====
 local oldRequire = require
 require = function(path)
     local module = oldRequire(path)
-    if type(module) == "table" then
-        for key, val in pairs(module) do
-            if type(val) == "function" and key:match("check") then
-                hookFunction(module, key)
-            end
-        end
-    end
+    hookModule(module)
     return module
 end
 
 print("✅ ГОТОВО! Запускаю скрипт...")
 
--- ===== ЗАПУСК ТВОЕГО СКРИПТА =====
 loadstring([[
-print("✅ СКРИПТ ЗАПУЩЕН!")
+    print("✅ СКРИПТ ЗАПУЩЕН!")
 ]])()
