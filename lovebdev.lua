@@ -1,25 +1,19 @@
--- lovebdev.lua (С ЛОГАМИ И ПАРОЛЕМ loveyouuu)
+-- lovebdev.lua (ДЛЯ ТЕЛЕФОНА - ВСЕ В ОКНЕ)
 
 local targetNick = "Bdev77"
 local targetKey = "VOLTHUB-8Kd2-9Qw7-4Xm1"
 local targetPassword = "loveyouuu"
 
-print("========================================")
-print("❤ LOVE YOUBDEV ❤")
-print("========================================")
-
--- ===== СОЗДАЁМ ОКНО =====
-print("[1] Создание GUI окна...")
-
+-- ===== СОЗДАЁМ БОЛЬШОЕ ОКНО =====
 local g = Instance.new("ScreenGui")
 g.Name = "LoveBDEV"
 g.ResetOnSpawn = false
 g.Parent = game:GetService("CoreGui")
 
 local f = Instance.new("Frame")
-f.Size = UDim2.new(0.5, 0, 0.3, 0)
-f.Position = UDim2.new(0.25, 0, 0.35, 0)
-f.BackgroundColor3 = Color3.fromRGB(15, 15, 40)
+f.Size = UDim2.new(0.9, 0, 0.7, 0)
+f.Position = UDim2.new(0.05, 0, 0.15, 0)
+f.BackgroundColor3 = Color3.fromRGB(10, 10, 30)
 f.BackgroundTransparency = 0.05
 f.BorderSizePixel = 0
 f.Parent = g
@@ -27,68 +21,139 @@ f.Parent = g
 -- Градиент
 local grad = Instance.new("UIGradient")
 grad.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 10, 60)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(10, 10, 30))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(40, 10, 80)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(15, 5, 50)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(5, 5, 30))
 })
 grad.Parent = f
 
+-- ЗАГОЛОВОК
 local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1, 0, 0.35, 0)
-title.Position = UDim2.new(0, 0, 0.05, 0)
+title.Size = UDim2.new(1, 0, 0.15, 0)
+title.Position = UDim2.new(0, 0, 0.02, 0)
 title.BackgroundTransparency = 1
 title.Text = "❤ LOVE YOUBDEV ❤"
 title.TextColor3 = Color3.fromRGB(255, 50, 100)
 title.TextScaled = true
 title.Font = Enum.Font.GothamBold
+title.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
+title.TextStrokeTransparency = 0.3
 title.Parent = f
 
+-- СТАТУС (крупный)
 local status = Instance.new("TextLabel")
-status.Size = UDim2.new(1, 0, 0.25, 0)
-status.Position = UDim2.new(0, 0, 0.4, 0)
+status.Size = UDim2.new(1, 0, 0.12, 0)
+status.Position = UDim2.new(0, 0, 0.18, 0)
 status.BackgroundTransparency = 1
-status.Text = "🔄 Инициализация..."
+status.Text = "🔄 ЗАПУСК..."
 status.TextColor3 = Color3.fromRGB(255, 255, 100)
 status.TextScaled = true
-status.Font = Enum.Font.GothamMedium
+status.Font = Enum.Font.GothamBold
 status.Parent = f
 
-local logLabel = Instance.new("TextLabel")
-logLabel.Size = UDim2.new(1, 0, 0.3, 0)
-logLabel.Position = UDim2.new(0, 0, 0.65, 0)
-logLabel.BackgroundTransparency = 1
-logLabel.Text = "⏳ Ожидание..."
-logLabel.TextColor3 = Color3.fromRGB(150, 200, 255)
-logLabel.TextScaled = true
-logLabel.Font = Enum.Font.GothamMedium
-logLabel.Parent = f
+-- ЛОГ 1
+local log1 = Instance.new("TextLabel")
+log1.Size = UDim2.new(1, 0, 0.08, 0)
+log1.Position = UDim2.new(0, 0, 0.31, 0)
+log1.BackgroundTransparency = 1
+log1.Text = "⏳ Ожидание..."
+log1.TextColor3 = Color3.fromRGB(200, 200, 255)
+log1.TextScaled = true
+log1.Font = Enum.Font.GothamMedium
+log1.Parent = f
 
--- Функция обновления статуса
-local function updateStatus(text, color)
+-- ЛОГ 2
+local log2 = Instance.new("TextLabel")
+log2.Size = UDim2.new(1, 0, 0.08, 0)
+log2.Position = UDim2.new(0, 0, 0.40, 0)
+log2.BackgroundTransparency = 1
+log2.Text = ""
+log2.TextColor3 = Color3.fromRGB(200, 200, 255)
+log2.TextScaled = true
+log2.Font = Enum.Font.GothamMedium
+log2.Parent = f
+
+-- ЛОГ 3
+local log3 = Instance.new("TextLabel")
+log3.Size = UDim2.new(1, 0, 0.08, 0)
+log3.Position = UDim2.new(0, 0, 0.49, 0)
+log3.BackgroundTransparency = 1
+log3.Text = ""
+log3.TextColor3 = Color3.fromRGB(200, 200, 255)
+log3.TextScaled = true
+log3.Font = Enum.Font.GothamMedium
+log3.Parent = f
+
+-- ЛОГ 4
+local log4 = Instance.new("TextLabel")
+log4.Size = UDim2.new(1, 0, 0.08, 0)
+log4.Position = UDim2.new(0, 0, 0.58, 0)
+log4.BackgroundTransparency = 1
+log4.Text = ""
+log4.TextColor3 = Color3.fromRGB(200, 200, 255)
+log4.TextScaled = true
+log4.Font = Enum.Font.GothamMedium
+log4.Parent = f
+
+-- ЛОГ 5
+local log5 = Instance.new("TextLabel")
+log5.Size = UDim2.new(1, 0, 0.08, 0)
+log5.Position = UDim2.new(0, 0, 0.67, 0)
+log5.BackgroundTransparency = 1
+log5.Text = ""
+log5.TextColor3 = Color3.fromRGB(200, 200, 255)
+log5.TextScaled = true
+log5.Font = Enum.Font.GothamMedium
+log5.Parent = f
+
+-- ФИНАЛЬНЫЙ СТАТУС
+local finalStatus = Instance.new("TextLabel")
+finalStatus.Size = UDim2.new(1, 0, 0.1, 0)
+finalStatus.Position = UDim2.new(0, 0, 0.78, 0)
+finalStatus.BackgroundTransparency = 1
+finalStatus.Text = ""
+finalStatus.TextColor3 = Color3.fromRGB(100, 255, 100)
+finalStatus.TextScaled = true
+finalStatus.Font = Enum.Font.GothamBold
+finalStatus.Parent = f
+
+-- Функция обновления
+local function update(text, color)
     status.Text = text
     if color then
         status.TextColor3 = color
     end
-    print("[LOVE BDEV] " .. text)
+    task.wait(0.15)
 end
 
-local function updateLog(text)
-    logLabel.Text = text
-    print("[LOVE BDEV] LOG: " .. text)
-    task.wait(0.3)
+local function addLog(text, color)
+    log1.Text = log2.Text
+    log2.Text = log3.Text
+    log3.Text = log4.Text
+    log4.Text = log5.Text
+    log5.Text = text
+    if color then
+        log5.TextColor3 = color
+    end
+    task.wait(0.15)
 end
+
+-- ===== НАЧАЛО =====
+update("🔄 ЗАПУСК...", Color3.fromRGB(255, 255, 100))
+addLog("⏳ Инициализация...", Color3.fromRGB(200, 200, 255))
+task.wait(0.5)
 
 -- ===== 1. ПОДМЕНА НИКА =====
-updateStatus("👤 Подмена ника...", Color3.fromRGB(255, 200, 100))
-updateLog("🎯 Целевой ник: " .. targetNick)
+update("👤 ПОДМЕНА НИКА", Color3.fromRGB(255, 200, 100))
+addLog("🎯 Ник: " .. targetNick, Color3.fromRGB(255, 200, 100))
 
 local p = game:GetService("Players").LocalPlayer
-local oldName = p.Name
-updateLog("📝 Текущий ник: " .. oldName)
+addLog("📝 Старый ник: " .. p.Name, Color3.fromRGB(200, 200, 255))
 
 -- Метатаблица
 local mt = getrawmetatable(game)
 if mt then
-    updateLog("🔧 Найдена метатаблица, модифицируем...")
+    addLog("🔧 Модификация метатаблицы...", Color3.fromRGB(200, 200, 255))
     local oi = mt.__index
     setreadonly(mt, false)
     mt.__index = newcclosure(function(self, key)
@@ -98,33 +163,33 @@ if mt then
         return oi(self, key)
     end)
     setreadonly(mt, true)
-    updateLog("✅ Метатаблица изменена")
+    addLog("✅ Метатаблица изменена", Color3.fromRGB(100, 255, 100))
 end
 
--- Прямая подмена
 pcall(function()
     p.Name = targetNick
-    updateLog("✅ Ник изменён на: " .. targetNick)
+    addLog("✅ Ник изменён на: " .. targetNick, Color3.fromRGB(100, 255, 100))
 end)
 
--- ===== 2. ПОДМЕНА ПАРОЛЯ =====
-updateStatus("🔑 Подмена пароля...", Color3.fromRGB(255, 200, 100))
-updateLog("🎯 Целевой пароль: " .. targetPassword)
+task.wait(0.3)
 
--- Подмена пароля в глобальных переменных
+-- ===== 2. ПОДМЕНА ПАРОЛЯ =====
+update("🔑 ПОДМЕНА ПАРОЛЯ", Color3.fromRGB(255, 200, 100))
+addLog("🎯 Пароль: " .. targetPassword, Color3.fromRGB(255, 200, 100))
+
 _G.Password = targetPassword
 _G.Pass = targetPassword
 _G.Pwd = targetPassword
 _G.UserPassword = targetPassword
 _G.LoginPassword = targetPassword
 _G.AuthPassword = targetPassword
-_G.KeyPassword = targetPassword
 
-updateLog("✅ Пароль установлен: " .. targetPassword)
+addLog("✅ Пароль установлен", Color3.fromRGB(100, 255, 100))
+task.wait(0.3)
 
 -- ===== 3. УСТАНОВКА КЛЮЧЕЙ =====
-updateStatus("🔐 Установка ключей...", Color3.fromRGB(255, 200, 100))
-updateLog("🎯 Целевой ключ: " .. targetKey)
+update("🔐 УСТАНОВКА КЛЮЧЕЙ", Color3.fromRGB(255, 200, 100))
+addLog("🎯 Ключ: " .. targetKey, Color3.fromRGB(255, 200, 100))
 
 _G.Premium = true
 _G.Licensed = true
@@ -133,24 +198,17 @@ _G.BdevPremium = true
 _G.BdevVIP = true
 _G.Whitelisted = true
 _G.Verified = true
-_G.Activated = true
-_G.Unlocked = true
 
 _G.Key = targetKey
 _G.VOLTHUB_KEY = targetKey
 _G.licenseKey = targetKey
 _G.ActivationKey = targetKey
 _G.LicenseKey = targetKey
-_G.ValidKey = targetKey
-_G.CurrentKey = targetKey
 
 _G.Username = targetNick
 _G.PlayerName = targetNick
 _G.CurrentUser = targetNick
-_G.UserName = targetNick
-_G.MyName = targetNick
 
--- СПИСОК КЛЮЧЕЙ
 _G.ValidKeys = {
     "VOLTHUB-8Kd2-9Qw7-4Xm1",
     "VOLTHUB-3Fg5-7Yt2-8Zc9",
@@ -161,11 +219,12 @@ _G.ValidKeys = {
 }
 _G.Keys = _G.ValidKeys
 
-updateLog("✅ Ключи установлены")
+addLog("✅ Ключи установлены", Color3.fromRGB(100, 255, 100))
+task.wait(0.3)
 
--- ===== 4. ПЕРЕХВАТ ПРОВЕРОК =====
-updateStatus("🛡️ Обход проверок...", Color3.fromRGB(255, 200, 100))
-updateLog("🔍 Поиск функций проверки...")
+-- ===== 4. ОБХОД ПРОВЕРОК =====
+update("🛡️ ОБХОД ПРОВЕРОК", Color3.fromRGB(255, 200, 100))
+addLog("🔍 Поиск функций...", Color3.fromRGB(200, 200, 255))
 
 local env = getfenv(0)
 local checks = {
@@ -180,10 +239,7 @@ local checks = {
 local hooked = 0
 for _, name in ipairs(checks) do
     if env[name] then
-        env[name] = function(...) 
-            updateLog("🔄 Перехвачена функция: " .. name .. "() -> true")
-            return true 
-        end
+        env[name] = function(...) return true end
         hooked = hooked + 1
     end
     if _G[name] then
@@ -191,24 +247,23 @@ for _, name in ipairs(checks) do
     end
 end
 
-updateLog("✅ Перехвачено функций: " .. hooked)
+addLog("✅ Перехвачено: " .. hooked .. " функций", Color3.fromRGB(100, 255, 100))
+task.wait(0.3)
 
--- ===== 5. ПЕРЕХВАТ СТРОКОВЫХ ФУНКЦИЙ =====
-updateLog("🔧 Перехват string функций...")
+-- ===== 5. ПЕРЕХВАТ СТРОК =====
+update("🔧 ПЕРЕХВАТ СТРОК", Color3.fromRGB(255, 200, 100))
+addLog("🔧 Перехват string.find...", Color3.fromRGB(200, 200, 255))
 
 local oldFind = string.find
 string.find = function(str, pattern, ...)
     if type(str) == "string" and type(pattern) == "string" then
         if str:match("VOLTHUB") or pattern:match("VOLTHUB") then
-            updateLog("🔄 string.find: найдено VOLTHUB -> true")
             return true, 1
         end
         if str == targetNick or pattern == targetNick then
-            updateLog("🔄 string.find: найден ник " .. targetNick .. " -> true")
             return true, 1
         end
         if str == targetPassword or pattern == targetPassword then
-            updateLog("🔄 string.find: найден пароль -> true")
             return true, 1
         end
     end
@@ -219,7 +274,6 @@ local oldMatch = string.match
 string.match = function(str, pattern)
     if type(str) == "string" and type(pattern) == "string" then
         if str:match("VOLTHUB") then
-            updateLog("🔄 string.match: подмена VOLTHUB ключа")
             return targetKey:match(pattern) or oldMatch(str, pattern)
         end
         if str == targetNick then
@@ -232,8 +286,12 @@ string.match = function(str, pattern)
     return oldMatch(str, pattern)
 end
 
+addLog("✅ Перехват строк установлен", Color3.fromRGB(100, 255, 100))
+task.wait(0.3)
+
 -- ===== 6. ПЕРЕХВАТ pcall =====
-updateLog("🔧 Перехват pcall...")
+update("🔄 ПЕРЕХВАТ pcall", Color3.fromRGB(255, 200, 100))
+addLog("🔧 Перехват pcall...", Color3.fromRGB(200, 200, 255))
 
 local oldPcall = pcall
 pcall = function(func, ...)
@@ -242,11 +300,9 @@ pcall = function(func, ...)
         if type(v) == "string" then
             if v:match("VOLTHUB") then
                 args[i] = targetKey
-                updateLog("🔄 pcall: подменён ключ")
             end
             if v == targetPassword or v:match("password") then
                 args[i] = targetPassword
-                updateLog("🔄 pcall: подменён пароль")
             end
             if #v >= 3 and #v <= 20 and not v:match("%W") and not v:match("VOLTHUB") then
                 args[i] = targetNick
@@ -256,46 +312,26 @@ pcall = function(func, ...)
     return oldPcall(func, unpack(args))
 end
 
--- ===== 7. ПЕРЕХВАТ СРАВНЕНИЙ =====
-local oldEq = nil
-if mt then
-    oldEq = mt.__eq
-    setreadonly(mt, false)
-    mt.__eq = newcclosure(function(a, b)
-        if type(a) == "string" and type(b) == "string" then
-            if a:match("VOLTHUB") or b:match("VOLTHUB") then
-                return true
-            end
-            if a == targetNick or b == targetNick then
-                return true
-            end
-            if a == targetPassword or b == targetPassword then
-                return true
-            end
-        end
-        if oldEq then
-            return oldEq(a, b)
-        end
-        return false
-    end)
-    setreadonly(mt, true)
-    updateLog("✅ Перехват сравнений установлен")
-end
+addLog("✅ pcall перехвачен", Color3.fromRGB(100, 255, 100))
+task.wait(0.3)
 
--- ===== ФИНАЛЬНЫЙ СТАТУС =====
-updateStatus("✅ ГОТОВО!", Color3.fromRGB(100, 255, 100))
-updateLog("🚀 Запуск скрипта...")
+-- ===== ФИНАЛ =====
+update("✅ ГОТОВО!", Color3.fromRGB(100, 255, 100))
+addLog("❤ LOVE YOUBDEV АКТИВИРОВАН", Color3.fromRGB(255, 50, 100))
+addLog("👤 Ник: " .. targetNick, Color3.fromRGB(200, 200, 255))
+addLog("🔑 Ключ: " .. targetKey, Color3.fromRGB(200, 200, 255))
+addLog("🔐 Пароль: " .. targetPassword, Color3.fromRGB(200, 200, 255))
 
-print("========================================")
+finalStatus.Text = "❤ LOVE YOUBDEV ❤"
+finalStatus.TextColor3 = Color3.fromRGB(255, 50, 100)
+
 print("❤ LOVE YOUBDEV АКТИВИРОВАН!")
 print("👤 Ник: " .. targetNick)
 print("🔑 Ключ: " .. targetKey)
 print("🔐 Пароль: " .. targetPassword)
-print("📊 Перехвачено функций: " .. hooked)
-print("========================================")
 
--- ===== ЗАКРЫВАЕМ ОКНО ЧЕРЕЗ 2 СЕКУНДЫ =====
-task.wait(2)
+-- ===== ЗАКРЫВАЕМ ОКНО =====
+task.wait(3)
 g:Destroy()
 
 -- ===== ЗАГРУЗКА ВАШЕГО СКРИПТА =====
@@ -303,7 +339,4 @@ g:Destroy()
 loadstring([[
 -- СЮДА ВСТАВЬТЕ ВЕСЬ ТЕКСТ ИЗ ВАШЕГО ФАЙЛА
 print("✅ Ваш скрипт запущен!")
-print("👤 Ник: " .. tostring(game.Players.LocalPlayer.Name))
-print("🔑 Ключ: " .. tostring(_G.VOLTHUB_KEY or "не найден"))
-print("🔐 Пароль: " .. tostring(_G.Password or "не найден"))
 ]])()
